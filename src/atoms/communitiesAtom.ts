@@ -10,7 +10,7 @@ export interface Community {
   imageURL?: string;
 }
 
-interface CommunitySnippet {
+export interface CommunitySnippet {
   communityId: string;
   isModerator?: boolean;
   imageURL?: string;
@@ -27,7 +27,5 @@ const defaultCommunityState: CommunityState = {
 
 export const communityState = atom<CommunityState>({
     key: "communitiesState",
-    default: {
-
-    }
+    default: defaultCommunityState
 })
