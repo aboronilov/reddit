@@ -32,7 +32,7 @@ const AuthModal = () => {
 
   useEffect(() => {
     user && handleClose();
-    console.log(`User: ${user?.email}`);
+    // console.log(`User: ${user?.email}`);
   }, [user]);
 
   return (

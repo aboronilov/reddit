@@ -16,7 +16,13 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { doc, getDoc, serverTimestamp, setDoc } from "@firebase/firestore";
+import {
+  doc,
+  getDoc,
+  runTransaction,
+  serverTimestamp,
+  setDoc,
+} from "@firebase/firestore";
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
@@ -37,7 +43,7 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length > 21) return;
-    setCommunityName(event.target.value);
+    setCommunityName(event.target.value.toLowerCase());
     setcharsRemaining(21 - event.target.value.length);
   };
 
@@ -48,7 +54,7 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
   };
 
   const handleCreateCommunity = async () => {
-    if (error) setError("")
+    if (error) setError("");
     // validate community name
     const format = /[ `!@#$%^&*()+\-=\[\]{};':"\\|,.<>\/?~]/;
     if (format.test(communityName) || communityName.length < 3) {
@@ -60,20 +66,28 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
 
     setLoading(true);
     try {
-      // check if exists in db
       const communityDocRef = doc(firestore, "communities", communityName);
-      const communityDoc = await getDoc(communityDocRef);
+      await runTransaction(firestore, async (transaction) => {
+        // check if exists in db
+        const communityDoc = await transaction.get(communityDocRef);
+        if (communityDoc.exists()) {
+          throw new Error(`Sorry, /r${communityName} is taken. Try another.`);
+        }
 
-      if (communityDoc.exists()) {
-        throw new Error(`Sorry, /r${communityName} is taken. Try another.`)
-      }
+        // create (setDoc - creates a new instance or updates an existiong one)
+        transaction.set(communityDocRef, {
+          creatorId: user?.uid,
+          createdAt: serverTimestamp(),
+          numberOfMembers: 1,
+          privacyType: communityType,
+        });
 
-      // create (setDoc - creates a new instance or updates an existiong one)
-      await setDoc(communityDocRef, {
-        creatorId: user?.uid,
-        createdAt: serverTimestamp(),
-        numberOfMembers: 1,
-        privacyType: communityType,
+        // create communitySnippet on user
+        transaction.set(doc(firestore, `users/${user?.uid}/communitySnippets`, communityName), {
+          communityId: communityName,
+          isModerator: true,
+          
+        });
       });
 
       setLoading(false);
@@ -126,7 +140,7 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
                 color={charsRemaining === 0 ? "red" : "gray.500"}
                 fontSize="9pt"
               >
-                {charsRemaining} Characters Remaining
+                {charsRemaining} Characters Remaining in lowecase
               </Text>
               <Text fontSize="9pt" color="red" pt={1}>
                 {error}
@@ -198,7 +212,11 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
             >
               Close
             </Button>
-            <Button height="30px" onClick={handleCreateCommunity} isLoading={loading}>
+            <Button
+              height="30px"
+              onClick={handleCreateCommunity}
+              isLoading={loading}
+            >
               Create Community
             </Button>
           </ModalFooter>
