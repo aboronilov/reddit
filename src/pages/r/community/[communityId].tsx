@@ -3,8 +3,9 @@ import { firestore } from "@/firebase/clientApp";
 import { doc, getDoc } from "@firebase/firestore";
 import { GetServerSidePropsContext } from "next";
 import safeJsonStringify from "safe-json-stringify";
-import NotFound from "@/components/Community/NotFound"
+import NotFound from "@/components/Community/NotFound";
 import Header from "@/components/Community/Header";
+import PageContent from "@/components/Layout/PageContent";
 
 type CommunityPageProps = {
   communityData: Community;
@@ -15,7 +16,15 @@ const CommunityPage = ({ communityData }: CommunityPageProps) => {
   if (!communityData) return <NotFound />;
   return (
     <>
-      <Header communityData={communityData}/>
+      <Header communityData={communityData} />
+      <PageContent>
+        <>
+          <div>Left side</div>
+        </>
+        <>
+          <div>Right side</div>
+        </>
+      </PageContent>
     </>
   );
 };
