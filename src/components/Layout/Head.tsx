@@ -1,15 +1,16 @@
 "use client"
+import Head from "next/head";
 
 type Props = {}
 
-const Head = (props: Props) => {
+const HeadLyaout = (props: Props) => {
   return (
-    <head>
+    <Head>
       <title>Boronilov Reddit</title>
-      {/* <Favicon /> */}
-    </head>
+      <link rel="shortcut icon" href="/images/redditFace.svg" />
+    </Head>
   );
 };
 
-export default Head;
+export default HeadLyaout;
 

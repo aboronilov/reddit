@@ -7,16 +7,10 @@ type Props = {
 
 const PageContent = ({ children }: Props) => {
   return (
-    <Flex border="1px solid red" justify="center" p="16px 0px">
-      <Flex
-        border="1px solid green"
-        justify="center"
-        width="95%"
-        maxWidth="860px"
-      >
+    <Flex justify="center" p="16px 0px">
+      <Flex justify="center" width="95%" maxWidth="860px">
         {/* left side */}
         <Flex
-          border="1px solid blue"
           direction="column"
           width={{ base: "100%", md: "65%" }}
           mr={{ base: 0, md: 6 }}
@@ -26,7 +20,6 @@ const PageContent = ({ children }: Props) => {
 
         {/* right side */}
         <Flex
-          border="1px solid orange"
           direction="column"
           display={{ base: "none", md: "flex" }}
           flexGrow={1}
