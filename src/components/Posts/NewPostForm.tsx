@@ -6,6 +6,7 @@ import { IoDocumentText, IoImageOutline } from "react-icons/io5";
 import { AiFillCloseCircle } from "react-icons/ai";
 import TabItem from "./TabItem";
 import TextInputs from "./PostForm/TextInputs";
+import ImageUpload from "./PostForm/ImageUpload";
 
 type Props = {};
 
@@ -44,11 +45,22 @@ const NewPostForm = (props: Props) => {
     body: "",
   });
   const [selectedFile, setSelectedFile] = useState<string>();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
   const handleCreatePost = async () => {};
 
-  const onSelectImage = () => {};
+  const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const reader = new FileReader();
+    if (event.target.files?.[0]) {
+      reader.readAsDataURL(event.target.files[0]);
+    }
+
+    reader.onload = (readerEvent) => {
+      if (readerEvent.target?.result) {
+        setSelectedFile(readerEvent.target?.result as string);
+      }
+    };
+  };
 
   const onTextChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -58,9 +70,9 @@ const NewPostForm = (props: Props) => {
       target: { name, value },
     } = event;
     setTextInputs((prev) => ({
-        ...prev,
-        [name]: value
-    }))
+      ...prev,
+      [name]: value,
+    }));
   };
 
   return (
@@ -68,6 +80,7 @@ const NewPostForm = (props: Props) => {
       <Flex width="100%">
         {formTabs.map((item) => (
           <TabItem
+            key={item.title}
             item={item}
             selected={item.title === selectedTab}
             setSelectedTab={setSelectedTab}
@@ -81,6 +94,14 @@ const NewPostForm = (props: Props) => {
             onChange={onTextChange}
             handleCreatePost={handleCreatePost}
             loading={loading}
+          />
+        )}
+        {selectedTab === "Images & Video" && (
+          <ImageUpload
+            selectedFile={selectedFile}
+            onSelectImage={onSelectImage}
+            setSelectedTab={setSelectedTab}
+            setSelectedFile={setSelectedFile}
           />
         )}
       </Flex>
