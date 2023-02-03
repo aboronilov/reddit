@@ -75,7 +75,9 @@ const NewPostForm = ({ user }: NewPostFormProps) => {
     const newPost: Post = {
       communityId: communityId as string,
       creatorId: user.uid,
-      creatorDisplayName: user.email!.split("@")[0],
+      creatorDisplayName: user.displayName
+        ? user.displayName
+        : user.email!.split("@")[0],
       title: textInputs.title,
       body: textInputs.body,
       numberOfComments: 0,
@@ -95,12 +97,12 @@ const NewPostForm = ({ user }: NewPostFormProps) => {
           imageURL: downloadURL,
         });
       }
+      router.back();
     } catch (error: any) {
       console.log(`handleCreatePost: ${error.message as string}`);
       setError(error.message);
     }
-    setLoading(false);
-    // router.back();
+    setLoading(false);    
   };
 
   const onSelectImage = (event: React.ChangeEvent<HTMLInputElement>) => {

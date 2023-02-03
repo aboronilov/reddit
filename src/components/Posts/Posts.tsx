@@ -1,6 +1,8 @@
 import { Community } from "@/atoms/communitiesAtom";
-import { firestore } from "@/firebase/clientApp";
+import { Post, postState } from "@/atoms/postsAtom";
+import { auth, firestore } from "@/firebase/clientApp";
 import usePosts from "@/hooks/usePosts";
+import { Stack } from "@chakra-ui/react";
 import {
   collection,
   getDocs,
@@ -9,14 +11,24 @@ import {
   where,
 } from "@firebase/firestore";
 import React, { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import PostItem from "./PostItem";
+import PostLoader from "./PostLoader";
 
 type PostProps = {
   communityData: Community;
 };
 
 const Posts = ({ communityData }: PostProps) => {
+  const [user] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
-  const {postStateValue, setPostStateValue} = usePosts();
+  const {
+    postStateValue,
+    setPostStateValue,
+    onVote,
+    onSelectPost,
+    onDeletePost,
+  } = usePosts();
 
   const getPosts = async () => {
     setLoading(true);
@@ -26,12 +38,17 @@ const Posts = ({ communityData }: PostProps) => {
         where("communityId", "==", communityData.id),
         orderBy("createdAt", "desc")
       );
+
       const postsDoc = await getDocs(postsQuery);
       const posts = postsDoc.docs.map((item) => ({
         id: item.id,
         ...item.data(),
       }));
-      console.log(`posts: ${posts}`)
+
+      setPostStateValue((prev) => ({
+        ...prev,
+        posts: posts as Post[],
+      }));
     } catch (error: any) {
       console.log(`getPosts: ${error.message}`);
     }
@@ -42,8 +59,27 @@ const Posts = ({ communityData }: PostProps) => {
     getPosts();
   }, []);
 
-  
-  return <div>Posts</div>;
+  return (
+    <>
+      {loading ? (
+        <PostLoader />
+      ) : (
+        <Stack>
+          {postStateValue.posts.map((item) => (
+            <PostItem
+              key={item.id}
+              post={item}
+              userIsCreator={user?.uid === item.creatorId}
+              userVoteValue={undefined}
+              onVote={onVote}
+              onSelectPost={onSelectPost}
+              onDeletePost={onDeletePost}
+            />
+          ))}
+        </Stack>
+      )}
+    </>
+  );
 };
 
 export default Posts;
