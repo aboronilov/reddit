@@ -1,5 +1,7 @@
 import { Community, communityState } from "@/atoms/communitiesAtom";
 import { auth, firestore, storage } from "@/firebase/clientApp";
+import useCommunityData from "@/hooks/useCommunityData";
+import usePosts from "@/hooks/usePosts";
 import useSelectFile from "@/hooks/useSelectFile";
 import {
   Box,
@@ -33,6 +35,7 @@ const About = ({ communityData }: Props) => {
   const { selectedFile, setSelectedFile, onSelectFile } = useSelectFile();
   const [uploadingImage, setUploadingImage] = useState(false);
   const setCommunityStateValue = useSetRecoilState(communityState);
+  const { postStateValue } = usePosts();
 
   const onUpdateImage = async () => {
     if (!selectedFile) return;
@@ -50,8 +53,8 @@ const About = ({ communityData }: Props) => {
         ...prev,
         currentCommunity: {
           ...prev.currentCommunity,
-          imageURL: downloadURL
-        } as Community     
+          imageURL: downloadURL,
+        } as Community,
       }));
     } catch (error: any) {
       console.log(`onUpdateImage: ${error.message}`);
@@ -79,7 +82,7 @@ const About = ({ communityData }: Props) => {
         <Stack>
           <Flex width="100%" p={2} fontSize="10pt" fontWeight={700}>
             <Flex direction="column" flexGrow={1}>
-              <Text>{communityData.numberOfMembers.toLocaleString()}</Text>
+              <Text>{communityData?.numberOfMembers?.toLocaleString()}</Text>
               <Text>Members</Text>
             </Flex>
             <Flex direction="column" flexGrow={1}>
@@ -105,11 +108,20 @@ const About = ({ communityData }: Props) => {
               </Text>
             )}
           </Flex>
-          <Link href={`${communityData.id}/submit`}>
-            <Button mt={3} height="30px">
-              Create Post
-            </Button>
-          </Link>
+          {postStateValue.selectedPost ? (
+            <Link href={`/submit` as string}>
+              <Button mt={3} height="30px">
+                Create Post
+              </Button>
+            </Link>
+          ) : (
+            <Link href={`${communityData.id}/submit`}>
+              <Button mt={3} height="30px">
+                Create Post
+              </Button>
+            </Link>
+          )}
+
           {communityData.creatorId === user?.uid && (
             <>
               <Divider />
