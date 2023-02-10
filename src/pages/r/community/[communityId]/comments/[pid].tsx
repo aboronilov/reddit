@@ -1,4 +1,5 @@
 import { Post } from "@/atoms/postsAtom";
+import Comments from "@/components/Posts/Comments/Comments";
 import About from "@/components/Community/About";
 import PageContent from "@/components/Layout/PageContent";
 import PostItem from "@/components/Posts/PostItem";
@@ -9,6 +10,7 @@ import { doc, getDoc } from "@firebase/firestore";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { User } from "firebase/auth";
 
 const PostPage = () => {
   const { postStateValue, setPostStateValue, onVote, onDeletePost } =
@@ -36,7 +38,7 @@ const PostPage = () => {
     if (pid && !postStateValue.selectedPost) {
       fetchPost(pid as string);
     }
-  }, [router.query, postStateValue.selectedPost]);
+  }, [router.query, postStateValue]);
 
   return (
     <PageContent>
@@ -54,8 +56,11 @@ const PostPage = () => {
             userIsCreator={postStateValue.selectedPost?.creatorId === user?.uid}
           />
         )}
-        {/* Selected post */}
-        {/* Comments */}
+        <Comments
+          user={user as User}
+          selectedPost={postStateValue.selectedPost}
+          communityId={postStateValue.selectedPost?.communityId as string}
+        />
       </>
       <>
         {communityStateValue.currentCommunity && (

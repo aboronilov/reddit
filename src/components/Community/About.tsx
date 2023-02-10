@@ -18,6 +18,7 @@ import { doc, updateDoc } from "@firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import moment from "moment";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { FaReddit } from "react-icons/fa";
@@ -36,6 +37,7 @@ const About = ({ communityData }: Props) => {
   const [uploadingImage, setUploadingImage] = useState(false);
   const setCommunityStateValue = useSetRecoilState(communityState);
   const { postStateValue } = usePosts();
+  const router = useRouter();
 
   const onUpdateImage = async () => {
     if (!selectedFile) return;
@@ -109,11 +111,9 @@ const About = ({ communityData }: Props) => {
             )}
           </Flex>
           {postStateValue.selectedPost ? (
-            <Link href={`/submit` as string}>
-              <Button mt={3} height="30px">
-                Create Post
-              </Button>
-            </Link>
+            <Button mt={3} height="30px" onClick={() => router.back()}>
+              Back
+            </Button>
           ) : (
             <Link href={`${communityData.id}/submit`}>
               <Button mt={3} height="30px">
