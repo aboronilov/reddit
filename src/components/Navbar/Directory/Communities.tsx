@@ -25,7 +25,7 @@ const Communities = (props: Props) => {
             key={snippet.communityId}
             icon={FaReddit}
             displayText={`r/${snippet.communityId}`}
-            link={`r/community/${snippet.communityId}`}
+            link={`/r/community/${snippet.communityId}`}
             iconColor="brand.100"
             imageURL={snippet.imageURL}
           />
@@ -52,7 +52,7 @@ const Communities = (props: Props) => {
             key={snippet.communityId}
             icon={FaReddit}
             displayText={`r/${snippet.communityId}`}
-            link={`r/community/${snippet.communityId}`}
+            link={`/r/community/${snippet.communityId}`}
             iconColor="blue.500"
             imageURL={snippet.imageURL}
           />

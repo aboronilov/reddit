@@ -110,17 +110,12 @@ const About = ({ communityData }: Props) => {
               </Text>
             )}
           </Flex>
-          {postStateValue.selectedPost ? (
-            <Button mt={3} height="30px" onClick={() => router.back()}>
-              Back
+
+          <Link href={`/r/community/${communityData.id}/submit`}>
+            <Button mt={3} height="30px">
+              Create Post
             </Button>
-          ) : (
-            <Link href={`${communityData.id}/submit`}>
-              <Button mt={3} height="30px">
-                Create Post
-              </Button>
-            </Link>
-          )}
+          </Link>
 
           {communityData.creatorId === user?.uid && (
             <>

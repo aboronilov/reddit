@@ -57,7 +57,7 @@ const Posts = ({ communityData }: PostProps) => {
 
   useEffect(() => {
     getPosts();
-  }, []);
+  }, [communityData]);
 
   return (
     <>
