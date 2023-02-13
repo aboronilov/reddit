@@ -18,6 +18,7 @@ const PostPage = () => {
   const [user] = useAuthState(auth);
   const router = useRouter();
   const { communityStateValue } = useCommunityData();
+  const { pid } = router.query;
 
   const fetchPost = async (postId: string) => {
     try {
@@ -33,8 +34,6 @@ const PostPage = () => {
   };
 
   useEffect(() => {
-    const { pid } = router.query;
-
     if (pid && !postStateValue.selectedPost) {
       fetchPost(pid as string);
     }
@@ -60,6 +59,7 @@ const PostPage = () => {
           user={user as User}
           selectedPost={postStateValue.selectedPost}
           communityId={postStateValue.selectedPost?.communityId as string}
+          postId={pid as string}
         />
       </>
       <>

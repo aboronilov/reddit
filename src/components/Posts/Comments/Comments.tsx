@@ -22,6 +22,7 @@ import {
 } from "@firebase/firestore";
 import { User } from "firebase/auth";
 import { ref } from "firebase/storage";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useSetRecoilState } from "recoil";
@@ -32,15 +33,18 @@ type Props = {
   user: User;
   selectedPost: Post | null;
   communityId: string;
+  postId: string;
 };
 
-const Comments = ({ user, selectedPost, communityId }: Props) => {
+const Comments = ({ user, selectedPost, communityId, postId }: Props) => {
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState<Comment[]>([]);
   const [fetchLoading, setFetchLoading] = useState(true);
   const [createLoading, setCreateLoading] = useState(false);
   const [loadingDeleteId, setLoadingDeleteId] = useState("")
   const setPostState = useSetRecoilState(postState);
+  const router = useRouter()
+ 
 
   const onCreateComment = async () => {
     setCreateLoading(true);
@@ -64,7 +68,7 @@ const Comments = ({ user, selectedPost, communityId }: Props) => {
 
       newComment.createdAt = { seconds: Date.now() / 1000 } as Timestamp;
 
-      const postDocRef = doc(firestore, "posts", selectedPost?.id!);
+      const postDocRef = doc(firestore, "posts", postId);
       batch.update(postDocRef, {
         numberOfComments: increment(1),
       });
@@ -92,7 +96,7 @@ const Comments = ({ user, selectedPost, communityId }: Props) => {
       const commentDocRef = doc(firestore, "comments", comment.id)
       batch.delete(commentDocRef)
 
-      const postDocRef = doc(firestore, "posts", comment?.postId)
+      const postDocRef = doc(firestore, "posts", postId)
       batch.update(postDocRef, {
         numberOfComments: increment(-1)
       })
@@ -117,7 +121,7 @@ const Comments = ({ user, selectedPost, communityId }: Props) => {
     try {
       const commentsQuerry = query(
         collection(firestore, "comments"),
-        where("postId", "==", selectedPost?.id),
+        where("postId", "==", postId),
         orderBy("createdAt", "desc")
       );
       const commentDocs = await getDocs(commentsQuerry);
@@ -128,6 +132,7 @@ const Comments = ({ user, selectedPost, communityId }: Props) => {
       setComments(comments as Comment[]);
     } catch (error: any) {
       console.log(`getPostComments error: ${error.message}`);
+      router.reload()
     }
     setFetchLoading(false);
   };
