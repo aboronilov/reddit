@@ -24,7 +24,7 @@ const Login = (props: Props) => {
     signInWithEmailAndPassword(loginForm.email, loginForm.password);
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: any) => {
     setLoginForm((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,

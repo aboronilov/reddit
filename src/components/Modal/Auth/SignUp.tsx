@@ -22,7 +22,7 @@ const SignUp = () => {
   const [createUserWithEmailAndPassword, userCred, loading, userError] =
     useCreateUserWithEmailAndPassword(auth);
 
-  const onSubmit = (e: React.FormEvent<HTMLInputElement>) => {
+  const onSubmit = (e: any) => {
     e.preventDefault();
     if (error) setError("");
 
@@ -34,7 +34,7 @@ const SignUp = () => {
   };
   //   firebase logic
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: any) => {
     setSignUpForm((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
