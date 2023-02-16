@@ -26,10 +26,10 @@ The deployed site is [here](https://reddit.boronilov.store/)
 
 ![Community](https://github.com/aboronilov/reddit/blob/main/public/screenshots/community.png)
 
-4. Creating posts with an opportunity to opload an image
+4. Creating posts with an opportunity to upload an image
 
 ![Create post](https://github.com/aboronilov/reddit/blob/main/public/screenshots/create_post.png)
 
-5. Post page with an opportunity to like/dislie and to leave/delete comments
+5. Post page with an opportunity to like/dislike and to post/delete comments
 
 ![Post](https://github.com/aboronilov/reddit/blob/main/public/screenshots/post.png)
