@@ -29,10 +29,7 @@ const useCommunityData = () => {
   const [communityStateValue, setCommunityStateValue] =
     useRecoilState(communityState);
 
-  const onJoinOrLeaveCommunity = (
-    communityData: Community,
-    isJoined: boolean
-  ) => {
+  const onJoinOrLeaveCommunity = (communityData: Community, isJoined?: boolean) => {
     if (!user) {
       setAuthModalState({ open: true, view: "login" });
       return;
