@@ -107,6 +107,7 @@ const Recommendations = () => {
                   borderBottom="1px solid"
                   borderColor="gray.200"
                   p="10px 12px"
+                  key={item.id}
                 >
                   <Flex width="80%" align="center">
                     <Flex width="15%">
