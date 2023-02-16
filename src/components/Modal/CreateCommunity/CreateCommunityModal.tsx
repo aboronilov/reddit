@@ -1,4 +1,5 @@
 import { firestore, auth } from "@/firebase/clientApp";
+import useDirectory from "@/hooks/useDirectory";
 import {
   Box,
   Button,
@@ -23,6 +24,7 @@ import {
   serverTimestamp,
   setDoc,
 } from "@firebase/firestore";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { BsFillEyeFill, BsFillPersonFill } from "react-icons/bs";
@@ -40,6 +42,8 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
   const [communityType, setCommunityType] = useState("public");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const { toggleMenuOpen } = useDirectory();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length > 21) return;
@@ -83,19 +87,22 @@ const CreateCommunityModal = ({ open, handleClose }: Props) => {
         });
 
         // create communitySnippet on user
-        transaction.set(doc(firestore, `users/${user?.uid}/communitySnippets`, communityName), {
-          communityId: communityName,
-          isModerator: true,
-          
-        });
+        transaction.set(
+          doc(firestore, `users/${user?.uid}/communitySnippets`, communityName),
+          {
+            communityId: communityName,
+            isModerator: true,
+          }
+        );
       });
-
-      setLoading(false);
+      handleClose();
+      toggleMenuOpen();
+      router.push(`/r/community/${communityName}`);
     } catch (error: any) {
       console.log(`handleCreateCommunity: ${error}`);
       setError(error?.message);
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   return (
