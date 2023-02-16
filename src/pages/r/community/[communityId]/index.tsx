@@ -17,16 +17,16 @@ type CommunityPageProps = {
 };
 
 const CommunityPage = ({ communityData }: CommunityPageProps) => {
-  const setCommunityStateValue = useSetRecoilState(communityState)
-
-  if (!communityData) return <NotFound />;
+  const setCommunityStateValue = useSetRecoilState(communityState);
 
   useEffect(() => {
     setCommunityStateValue((prev) => ({
       ...prev,
-      currentCommunity: communityData
-    }))
-  }, [communityData])
+      currentCommunity: communityData,
+    }));
+  }, [communityData]);
+
+  if (!communityData) return <NotFound />;
 
   return (
     <>
@@ -34,10 +34,10 @@ const CommunityPage = ({ communityData }: CommunityPageProps) => {
       <PageContent>
         <>
           <CreatePostLink />
-          <Posts communityData={communityData}/>
+          <Posts communityData={communityData} />
         </>
         <>
-          <About communityData={communityData}/>
+          <About communityData={communityData} />
         </>
       </PageContent>
     </>

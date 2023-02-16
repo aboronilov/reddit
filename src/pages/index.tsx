@@ -18,11 +18,13 @@ import { Stack } from "@chakra-ui/react";
 import PostItem from "@/components/Posts/PostItem";
 import CreatePostLink from "@/components/Community/CreatePostLink";
 import { communityState } from "@/atoms/communitiesAtom";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import useCommunityData from "@/hooks/useCommunityData";
 import Recommendations from "@/components/Community/Recommendations";
 import Premium from "@/components/Community/Premium";
 import PersonalHome from "@/components/Community/PersonalHome";
+import { authModalState } from "@/atoms/authModalAtom";
+import useDirectory from "@/hooks/useDirectory";
 
 const Home: NextPage = () => {
   const [user, loadingUser] = useAuthState(auth);
