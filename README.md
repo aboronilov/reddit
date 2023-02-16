@@ -1,4 +1,4 @@
-# Fully responsive full-stack reddit clone
+# Fully responsive full-stack Reddit clone
 The deployed site is [here](https://reddit.boronilov.store/)
 
 ## Technologies
@@ -14,22 +14,22 @@ The deployed site is [here](https://reddit.boronilov.store/)
 ## Features
 1. Main page with most popular posts and top communities
 
-![Landing page](https://github.com/aboronilov/amazon/blob/master/frontend/public/screenshots/main_page.jpg)
+![Landing page](https://github.com/aboronilov/reddit/blob/main/public/screenshots/landing.png)
 
 2. Authentication system via Google account or JWT (login and resgister new user with E-mail)
 
-![Auth](https://github.com/aboronilov/amazon/blob/master/frontend/public/screenshots/login.jpg)
+![Auth](https://github.com/aboronilov/reddit/blob/main/public/screenshots/auth.png)
 
 3. Creating communities with an oportunity to add new posts and change community image
 
-![Create community](https://github.com/aboronilov/amazon/blob/master/frontend/public/screenshots/login.jpg)
+![Create community](https://github.com/aboronilov/reddit/blob/main/public/screenshots/create_community.png)
 
-![Community](https://github.com/aboronilov/amazon/blob/master/frontend/public/screenshots/login.jpg)
+![Community](https://github.com/aboronilov/reddit/blob/main/public/screenshots/community.png)
 
 4. Creating posts with an opportunity to opload an image
 
-![Create community](https://github.com/aboronilov/amazon/blob/master/frontend/public/screenshots/login.jpg)
+![Create post](https://github.com/aboronilov/reddit/blob/main/public/screenshots/create_post.png)
 
 5. Post page with an opportunity to like/dislie and to leave/delete comments
 
-![Create community](https://github.com/aboronilov/amazon/blob/master/frontend/public/screenshots/login.jpg)
+![Post](https://github.com/aboronilov/reddit/blob/main/public/screenshots/post.png)
