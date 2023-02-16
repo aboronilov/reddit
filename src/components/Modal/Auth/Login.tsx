@@ -19,7 +19,7 @@ const Login = (props: Props) => {
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
 
-  const onSubmit = (e: React.FormEvent<HTMLInputElement>) => {
+  const onSubmit = (e: any) => {
     e.preventDefault();
     signInWithEmailAndPassword(loginForm.email, loginForm.password);
   };
