@@ -74,7 +74,7 @@ const NewPostForm = ({ user, communityImageURL }: NewPostFormProps) => {
   const handleCreatePost = async () => {
     const { communityId } = router.query;
 
-    const newPost: Post = {
+    const newPost: any = {
       communityId: communityId as string,
       communityImageURL: communityImageURL || "",
       creatorId: user.uid,
