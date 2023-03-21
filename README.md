@@ -1,5 +1,5 @@
 # Fully responsive full-stack Reddit clone
-The deployed site is [here](https://reddit.boronilov.store/)
+The deployed site is [here](https://reddit-640hd4icq-boronilov-team.vercel.app/)
 
 ## Technologies
 
